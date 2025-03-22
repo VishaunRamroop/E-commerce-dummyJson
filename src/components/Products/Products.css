@@ -1,0 +1,76 @@
+.product-container{
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  display: grid;
+  grid-template-columns: .25fr 1fr;
+  grid-template-rows: auto;
+ 
+  background-color:#4CC9FE;
+  position: relative;
+ 
+  min-height: 100vh;
+
+  grid-template-areas: "category wrapper wrapper"
+  "category wrapper wrapper"
+  "category wrapper wrapper";
+}
+.product-wrapper{
+
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr  ;
+    grid-template-rows: auto;
+    gap: 10px;
+    background-color:#37AFE1;
+    grid-area: wrapper;
+}
+.card{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+ min-width: 250px;
+
+  flex: 1;
+  
+  background-color: #F8FAFC;
+  box-shadow: 2px 2px 10px rgba(0,0,0,.5);
+  border-radius: 10px;
+  opacity: 0.95;
+  transition: all .3s ease-in-out;
+}
+.card img{
+object-fit: contain;
+width: 150px;
+}
+.card:hover{
+  background-color:#F9F5F6;
+  box-shadow: 5px 5px 20px;
+  opacity: 1;
+}
+
+.card-body{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: .5rem;
+}
+.single-product-container{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 2rem;
+}
+.add-btn{
+  padding: .5rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  background-color: cadetblue;
+  transition: all .25s ease-in-out;
+}
+.add-btn:hover{
+  background-color: royalblue;
+  color: white;
+}

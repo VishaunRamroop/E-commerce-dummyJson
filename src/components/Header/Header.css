@@ -1,0 +1,26 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  flex: 1;
+  background-color:#F9F5F6;
+  box-shadow: 2px 2px 12px;
+  width: 100%;
+  margin-bottom: 15px;
+  transition: all .25s ease-in-out;
+  opacity: .8;
+}
+.header-container:hover{
+  background-color: #F9F5F6;
+  box-shadow: 4px 4px 24px;
+  opacity: 1;
+}
+.header-name{
+  cursor: pointer;
+  transition: all .25s ease-in-out;
+}
+.header-name:hover{
+  color: cornflowerblue;
+  font-size: 50px;
+}

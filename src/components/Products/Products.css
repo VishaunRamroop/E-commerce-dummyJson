@@ -1,4 +1,8 @@
-.product-container{
+
+@import "tailwindcss";
+
+
+/* .product-container{
   padding-top: 2rem;
   padding-bottom: 2rem;
   display: grid;
@@ -73,4 +77,4 @@ width: 150px;
 .add-btn:hover{
   background-color: royalblue;
   color: white;
-}
+} */

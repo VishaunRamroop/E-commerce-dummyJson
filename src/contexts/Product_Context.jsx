@@ -1,4 +1,4 @@
-import { useState,useContext,createContext } from "react";
+import { useState,useContext,createContext,useMemo } from "react";
 import axios from "axios";
 const ProductContext = createContext();
 export  function ProductProvider({children}){
@@ -14,7 +14,10 @@ const [limit,setLimit]= useState(10);
 const [maxPages,setMaxPage]= useState(0)
 const [singleProduct,setSingleProduct]= useState({});
 const [open,setOpen]= useState(false);
-async function getProducts(currentPage,operationType,category) {
+const [minPrice,setMinPrice]= useState('1')
+const [maxPrice,setMaxPrice]= useState('1000')
+  const [priceRange,setPriceRange]= useState([0,1000]);
+async function getProducts(currentPage,operationType,category,minPrice,maxPrice) {
 switch(operationType){
   
   case 'reset':
@@ -51,6 +54,8 @@ switch(operationType){
     } catch (e) {
       console.error(e)
       setError(e);
+    }finally{
+      setLoading(false)
     }
     break;
   
@@ -61,7 +66,7 @@ switch(operationType){
         setLoading(true);
         console.log('filter')
         const {data} = await axios(`https://dummyjson.com/products/category/${category}?limit=10&skip=${10*currentPage}`);
-      
+        
         const newTotal = data.total;
         // const newLimit= data.limit;
         // console.log(newTotal,newLimit)
@@ -81,7 +86,7 @@ switch(operationType){
         
         }else{
           setMaxPage(0)
-        }
+        };
         if(data){
      
      
@@ -92,6 +97,61 @@ switch(operationType){
       } catch (e) {
         console.error(e)
         setError(e);
+      }finally{
+        setLoading(false)
+      }
+      break;
+      case 'price':
+      try {
+        setLoading(true);
+        setOperation(operationType);
+   
+          if(!category) return
+        let  {data}= await axios(`https://dummyjson.com/products/category/${category}`)
+          console.log(data)
+         
+             const filteredProduct = data?.products.filter((item)=>item.price >=minPrice &&  item.price <= maxPrice);
+    if(!filteredProduct || filteredProduct.length===0){
+      console.warn('No products found')
+      setProducts([]);
+      setLoading(false);
+      setTotal(0);
+      setMaxPage(0);
+      setCurrentPage(0)
+      return
+    }
+             console.log(filteredProduct)
+            const paginatedProducts = filteredProduct?.slice(
+            currentPage * limit,
+           currentPage * limit + limit
+    );
+    
+      
+             const newTotal = filteredProduct?.length;
+        
+             if(newTotal && newTotal >0 && limit && limit >0){
+              setTotal(newTotal);
+              console.log('after set new total')
+              const calculatedMaxPage= Math.ceil(newTotal/limit);
+              console.log(calculatedMaxPage)
+              setMaxPage(calculatedMaxPage)
+              console.log('after set calculated max page')
+              if(calculatedMaxPage ===1){
+                setCurrentPage(0)
+                console.log('after if calculated max page ===1')
+                 }
+          console.log(paginatedProducts)
+                if(paginatedProducts.length ===0) setProducts([])
+          setProducts(paginatedProducts);
+        console.log('after set products')
+   
+                }
+              
+               
+      } catch (error) {
+        console.error(error)
+      }finally{
+        setLoading(false)
       }
       break;
     default:
@@ -126,6 +186,8 @@ switch(operationType){
       } catch (e) {
         console.error(e)
         setError(e);
+      }finally{
+        setLoading(false)
       }
 }
 };
@@ -155,10 +217,52 @@ async function handleSelectedPage(page){
   await getProducts(page,operation,category)
 }
 
+const values = useMemo(() => ({
+  loading,
+  setLoading,
+  error,
+  setError,
+  products,
+  setProducts,
+  getProducts,
+  currentPage,
+  setCurrentPage,
+  operation,
+  setOperation,
+  handlePrevPage,
+  handleNextPage,
+  setCategory,
+  category,
+  singleProduct,
+  total,
+  limit,
+  maxPages,
+  handleSelectedPage,
+  open,
+  setOpen,
+  priceRange,
+  setPriceRange,
+  minPrice,
+  setMinPrice,
+  maxPrice,
+  setMaxPrice
+}), [
+  loading,
+  error,
+  products,
+  currentPage,
+  operation,
+  category,
+  singleProduct,
+  total,
+  limit,
+  maxPages,
+  open,
+  priceRange,
+  minPrice,
+  maxPrice,
 
-let values={
-  loading,setLoading,error,setError,products,setProducts,getProducts,currentPage,setCurrentPage,operation,setOperation,handlePrevPage,handleNextPage,setCategory,category,singleProduct,total,limit,maxPages,handleSelectedPage,open,setOpen
-}
+]);
   return <ProductContext.Provider value={values}>
           {children}
 

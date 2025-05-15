@@ -1,35 +1,53 @@
-import {useEffect, useState} from 'react'
-import './Slider.css';
-import { FaHandPointLeft } from "react-icons/fa";
-import { FaHandPointRight } from "react-icons/fa";
-export default function Slider({slider}) {
-  const [count,setCount]= useState(1);
-  function handleNext(){
-    setCount(prevCount => (prevCount === slider.length-1? 0:prevCount+1))
-  };
-  function handlePrev(){
-    setCount(prevCount  => (prevCount  ===0?slider.length-1:prevCount  -1))
-  };
-  useEffect(()=>{
-    const interval = setInterval(()=>{
-      handleNext()
-    },3000)
+import {useEffect, useState} from 'react';
+import  './Slider.css';
+import slides from './slider.mjs'
+export default function Slider() {
 
-    return ()=>clearInterval(interval)
-  },[count])
+
+  const [slideIndex,setSlideIndex]= useState(0)
+  let interval = null;
+
+  function showSlide(index){}
+
+  function handlePrev(){
+    setSlideIndex(s=>(s<1?slides.length-1:s-1))
+
+
+  };
+  function handleNext(){ 
+   setSlideIndex(s=>(s>=slides.length-1?0:s+1))
+  
+  };
+
+
+useEffect(() => {
+  slides.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+}, [slides]);
+
+
+
+  useEffect(()=>{
+    const nextSlide = setInterval(()=>{
+      handleNext()
+    },2000)
+    return ()=>clearInterval(nextSlide)
+  },[])
   return (
-    <div className="slider-container">
-        <button className='slider-btn next' aria-label='Go to Next Image' onClick={()=>handleNext()}><FaHandPointRight className='right-finger' size={25} /></button>
-        <button className='slider-btn prev' aria-label='Go to Previous Image' onClick={()=>handlePrev()}><FaHandPointLeft className='left-finger'  size={25}/></button>
-      <div className="slider-wrapper">
-    
-        <div className="slider">
+    <div className='slider'>
+      <div className="slides">
       
-          {slider.map((tavern,index)=>{
-            return <img className={count===index? 'slider-img active':'slider-img'} key={tavern.id ||index} src={count ===tavern.id ?tavern.src:null}/>
-          })}
-        </div>
+      {slides?.map((item,index)=>{
+        return <div key={item.id} className={item.id===slideIndex? 'displaySlide slide':'slide'}><img  src={item.src} alt="" /></div>
+      })}
+        
+  
       </div>
+   
+      <button className='prev' onClick={handlePrev}>prev</button>
+      <button className='next' onClick={handleNext}>next</button>
     </div>
   )
 }

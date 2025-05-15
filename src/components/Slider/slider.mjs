@@ -2,17 +2,17 @@ const slider =[
   {
     id:0,
     name:'cloths',
-    src:'cloth-stock-image.jpg'
+    src:'promo-1.jpg'
   },
   {
     id:1,
     name:'coupon',
-    src:'coupon.jpg'
+    src:'promo-2.jpg'
   },
   {
     id:2,
     name:'grocerystore-stock',
-    src:'grocerystore-stock.jpg'
+    src:'promo-3.jpg'
   },
 ]
 

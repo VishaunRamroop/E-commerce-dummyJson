@@ -12,7 +12,12 @@
   font-size: 15px;
   border-radius: 5px;
   border: none;
-  background-color:#D3F1DF ;
+  background-color:#a8afab54 ;
+    transition: all .25s ease-in-out;
+}
+.pagination-btn:hover{
+  font-size: 18px;
+  background-color:#a8afaba1 ;
 }
 .pagination-btn-display{
   display: flex;
@@ -23,12 +28,23 @@
 
 }
 .page-btn{
+  font-size: 1rem;
   padding: .5rem;
   border-radius: 50%;
   border:none;
+  transition: all .25s ease-in-out;
  
 }
+.page-btn:hover{
+    padding: .5rem;
+  border-radius: 50%;
+  font-size: 1.2rem
+}
 .page-btn.active{
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.411);
+  color: white;
+}
+.page-btn.active:hover{
+  background-color: rgba(0, 0, 0, 0.719);
   color: white;
 }

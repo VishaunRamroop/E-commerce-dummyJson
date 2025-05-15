@@ -8,7 +8,7 @@ const isDisabled = currentPage >=maxPages-1;
 const pageNumbers = useMemo(()=>{
 const numbers =[];
 const maxShow=5;
-const range =2;
+const range =1;
 
 if(maxPages <= maxShow){
   for(let i =0;i<maxPages;i++){
@@ -17,10 +17,11 @@ if(maxPages <= maxShow){
 }else{
   numbers.push(0)
 
-  for(let i = Math.max(currentPage-range,1);i<=Math.min(currentPage+range,maxPages-2);i++){
+  for(let i = Math.max(currentPage-range,1);i<=Math.min(currentPage+range,maxPages);i++){
     numbers.push(i)
   }
   numbers.push(maxPages-1)
+  console.log(numbers)
   return numbers
 }
 return numbers

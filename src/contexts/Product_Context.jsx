@@ -7,17 +7,18 @@ const [products,setProducts]= useState([]);
 const [loading,setLoading]= useState(false);
 const [error,setError]= useState(false);
 const [currentPage,setCurrentPage]= useState(0);
-const [operation,setOperation]= useState('');
+const [operation,setOperation]= useState('normal');
 const [category,setCategory]= useState('');
 const [total,setTotal]= useState(null);
 const [limit,setLimit]= useState(10);
 const [maxPages,setMaxPage]= useState(0)
 const [singleProduct,setSingleProduct]= useState({});
 const [open,setOpen]= useState(false);
-const [minPrice,setMinPrice]= useState('1')
-const [maxPrice,setMaxPrice]= useState('1000')
+const [minPrice,setMinPrice]= useState('1');
+const [maxPrice,setMaxPrice]= useState('1000');
+const [noProducts,setNoProduct]= useState(false)
   const [priceRange,setPriceRange]= useState([0,1000]);
-async function getProducts(currentPage,operationType,category,minPrice,maxPrice) {
+async function getProducts(page,operationType,category,minPrice,maxPrice) {
 switch(operationType){
   
   case 'reset':
@@ -26,7 +27,7 @@ switch(operationType){
       setCategory('')
       setLoading(true);
       console.log('reset')
-      const {data} = await axios(`https://dummyjson.com/products?limit=10&skip=${10*currentPage}`);
+      const {data} = await axios(`https://dummyjson.com/products?limit=10&skip=${10*page}`);
 
       const newTotal = data.total;
     
@@ -106,25 +107,33 @@ switch(operationType){
         setLoading(true);
         setOperation(operationType);
    
-          if(!category) return
+          if(!category) {
+            setLoading(false)
+            console.warn('no category selected');
+            setOperation('normal')
+            return;
+          }
         let  {data}= await axios(`https://dummyjson.com/products/category/${category}`)
           console.log(data)
          
              const filteredProduct = data?.products.filter((item)=>item.price >=minPrice &&  item.price <= maxPrice);
-    if(!filteredProduct || filteredProduct.length===0){
-      console.warn('No products found')
-      setProducts([]);
-      setLoading(false);
-      setTotal(0);
-      setMaxPage(0);
-      setCurrentPage(0)
-      return
-    }
-             console.log(filteredProduct)
-            const paginatedProducts = filteredProduct?.slice(
-            currentPage * limit,
-           currentPage * limit + limit
-    );
+              if(!filteredProduct || filteredProduct.length===0){
+                console.warn('No products found')
+                setProducts([]);
+                setLoading(false);
+                setTotal(0);
+                setMaxPage(0);
+                setCurrentPage(0)
+                setOperation('normal')
+                setNoProduct(true)
+                return
+              }
+                  console.log(filteredProduct);
+                  setNoProduct(false)
+                  const paginatedProducts = filteredProduct?.slice(
+                  currentPage * limit,
+                currentPage * limit + limit
+                  );
     
       
              const newTotal = filteredProduct?.length;
@@ -154,11 +163,48 @@ switch(operationType){
         setLoading(false)
       }
       break;
-    default:
+    case 'normal':
       try {
         setLoading(true);
      
-        const {data} = await axios(`https://dummyjson.com/products?limit=10&skip=${10*currentPage}`);
+        const {data} = await axios(`https://dummyjson.com/products?limit=10&skip=${10*page}`);
+ 
+        const newTotal = data.total;
+      
+        if(newTotal && limit && limit >0){
+          setTotal(newTotal);
+      
+          const calculatedMaxPage = Math.ceil(newTotal/limit);
+          if(currentPage >= calculatedMaxPage){
+            setMaxPage(calculatedMaxPage);
+          }else{
+            setMaxPage(calculatedMaxPage);
+          }
+          if(calculatedMaxPage ===1){
+            setCurrentPage(0)
+          }
+        }else{
+          setMaxPage(0)
+        };
+        if(data){
+     
+     
+          setLoading(false);
+          setProducts(data.products);
+        }
+      } catch (e) {
+        console.error(e)
+        setError(e);
+      }finally{
+        setLoading(false)
+      }
+      break;
+      default:
+      
+      try {
+        setLoading(true);
+     
+        const {data} = await axios(`https://dummyjson.com/products?limit=10&skip=${10*page}`);
  
         const newTotal = data.total;
       
@@ -192,29 +238,37 @@ switch(operationType){
 }
 };
 
-async function handleNextPage(){
+async function handleNextPage(page){
 
 console.log(currentPage)
 console.log(maxPages)
 console.log(total,limit)
 if(currentPage <maxPages -1 && products.length >0){
-  const nextPage= currentPage +1;
+  const nextPage= page +1;
   setCurrentPage(nextPage);
-  await getProducts(nextPage,operation,category)
+
+  if(!category){
+    
+      await getProducts(nextPage,'normal','')
+  }
 }
   
 };
-async function handlePrevPage(){
+async function handlePrevPage(page){
  if(currentPage >0){
-  const nextPage= currentPage -1
+ 
+  const nextPage= page -1
   setCurrentPage(nextPage);
-  await getProducts(nextPage,operation,category)
+  if(!category){
+      
+      await getProducts(nextPage,'normal','')
+  }
  }
 };
 
 async function handleSelectedPage(page){
   setCurrentPage(page);
-  await getProducts(page,operation,category)
+  await getProducts(page,operation)
 }
 
 const values = useMemo(() => ({
@@ -245,7 +299,8 @@ const values = useMemo(() => ({
   minPrice,
   setMinPrice,
   maxPrice,
-  setMaxPrice
+  setMaxPrice,
+  noProducts
 }), [
   loading,
   error,

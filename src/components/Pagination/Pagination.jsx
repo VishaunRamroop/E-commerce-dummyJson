@@ -8,7 +8,7 @@ const isDisabled = currentPage >=maxPages-1;
 const pageNumbers = useMemo(()=>{
 const numbers =[];
 const maxShow=5;
-const range =1;
+const range =2;
 
 if(maxPages <= maxShow){
   for(let i =0;i<maxPages;i++){
@@ -28,7 +28,7 @@ return numbers
 },[currentPage,maxPages])
   return (
     <div className='pagination-wrapper'>
-        <button className='pagination-btn' disabled={currentPage<=0}  onClick={()=>handlePrevPage()}>Prev</button>
+        <button className='pagination-btn' disabled={currentPage<=0}  onClick={()=>handlePrevPage(currentPage)}>Prev</button>
 
         {maxPages&& (<div className='pagination-btn-display'>
           {pageNumbers?.map((pages,index)=>{
@@ -40,7 +40,7 @@ return numbers
 
 
         </div>)}
-        <button className='pagination-btn' disabled={currentPage >=maxPages-1 } onClick={()=>handleNextPage()}>Next</button>
+        <button className='pagination-btn' disabled={currentPage >=maxPages-1 } onClick={()=>handleNextPage(currentPage)}>Next</button>
       
    
     </div>

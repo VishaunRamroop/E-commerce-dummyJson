@@ -30,7 +30,7 @@ return price
 function add(arg) {
 
 
-
+console.log(arg)
 
   setCart(cart=>{
     const existingProduct = cart.find(item=>item.id===arg.id);
@@ -43,7 +43,14 @@ function add(arg) {
     }
    });
     
-
+};
+function setQuantity(arg,quant){
+  setCart(cart=> {
+    const existingProduct = cart.find(item=>item.id===arg.id);
+    if(existingProduct){
+      return cart?.map((item)=> item.id===arg.id?{ ...item,quantity:Number(quant)}:item)
+    }
+  })
 }
 async function minus(arg) {
 setCart(cart=>{
@@ -72,7 +79,7 @@ setCart(cart=>{
 
 }
 
-let values={add,minus,remove,cart,getTotalPrice,getQuantity};
+let values={add,minus,remove,cart,getTotalPrice,getQuantity,setQuantity};
   return <CartContext.Provider value={values}>
     {children}
   </CartContext.Provider>

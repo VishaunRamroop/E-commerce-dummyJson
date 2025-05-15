@@ -59,7 +59,7 @@ import useProduct from '../../contexts/Product_Context'
 export default function Category() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [toggle,setToggle]= useState(false);
-  const {category,setCategory,minPrice,setMinPrice,maxPrice,setMaxPrice,getProducts,currentPage,setCurrentPage,operation,setOperation,product,total,loading}= useProduct();
+  const {category,setCategory,minPrice,setMinPrice,maxPrice,setMaxPrice,getProducts,currentPage,setCurrentPage,operation,setOperation,product,total,loading,noProducts}= useProduct();
    const categoryOptions=['Beauty','Fragrances','Furniture','Smartphones','Groceries','Sunglasses']
   const filters = [
   {
@@ -109,18 +109,20 @@ export default function Category() {
 
 async function handleSubmit(e){
   e.preventDefault();
-
-  await getProducts(0,'price',category,minPrice,maxPrice);
+  const cate = category ||''
+  await getProducts(0,'price',cate,minPrice,maxPrice);
   setCurrentPage(0)
- 
+
+
 };
 
 
 useEffect(()=>{
-  setCurrentPage(0)
-getProducts(0,'price',category,minPrice,maxPrice)
-  
-},[category,minPrice,maxPrice])
+
+getProducts(currentPage,'price',category,minPrice,maxPrice)
+ 
+
+},[currentPage,category,minPrice,maxPrice])
   return (
     <div className="bg-white">
      {<div>
@@ -246,7 +248,7 @@ getProducts(0,'price',category,minPrice,maxPrice)
             </aside>
 
           
-            <div className="mt-6 lg:col-span-4 lg:mt-0 xl:col-span-4">{ loading? <p>Loading....</p>:product?.length===0?<p>No Products Found</p>:<ProductList/>}</div>
+            <div className="mt-6 lg:col-span-4 lg:mt-0 xl:col-span-4">{ noProducts ===true ? <p>No products match your filter</p>:<ProductList/>}</div>
           </div>
         </main>
       </div>}

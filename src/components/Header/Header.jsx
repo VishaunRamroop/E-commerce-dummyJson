@@ -1,20 +1,20 @@
-import {useState} from 'react';
-import Navbar from './Navbar/Navbar'
+import {useState,useEffect} from 'react';
+
 import './Header.css';
 import { Link } from 'react-router-dom';
 import useProduct from '../../contexts/Product_Context';
-import { Dialog, DialogPanel } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Dialog, DialogPanel } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
+import useCart from '../../contexts/Cart_Context';
 export default function Header() {
   const {getProducts}= useProduct();
-
+  const {getQuantity,cart}= useCart();
 
 
 const navigation = [
-  { name: 'Home', href: '#' },
-  { name: 'Mens', href: '#' },
-  { name: 'Womens', href: '#' },
+  { name: 'Home', href: '/' },
+
   { name: 'Company', href: '#' },
 ]
 
@@ -22,7 +22,7 @@ const navigation = [
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white">
+    <header className="bg-white fixed top-0 left-0 w-full z-50 bg-white shadow-md">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 min-h-20 m-5">
         <div className="flex items-center gap-x-12">
           <a href="#" className="-m-1.5 p-1.5">
@@ -48,9 +48,9 @@ const navigation = [
           </button>
         </div>
         <div className="hidden lg:flex">
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </a>
+          <Link to="/cart" className="text-sm/6 font-semibold text-gray-900">
+            Cart {getQuantity()} <span aria-hidden="true">&rarr;</span>
+          </Link>
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -89,7 +89,7 @@ const navigation = [
               </div>
               <div className="py-6">
                 <a
-                  href="#"
+                  href="/cart"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                  Cart

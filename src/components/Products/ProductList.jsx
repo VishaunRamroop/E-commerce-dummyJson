@@ -17,7 +17,7 @@ const{add,cart}= useCart();
   // },[currentPage])
 return <>
 
-    {<div className="flex justify-center min-h-screen">
+    {<div className="flex justify-center ">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 ">
         <h2 className="sr-only">Products</h2>
 
@@ -25,7 +25,7 @@ return <>
           {products?.map((product) => (
             <div
               key={product.id}
-              className="relative flex flex-col rounded-lg border border-gray-200 bg-white"
+              className="relative flex flex-col rounded-lg border border-gray-200 bg-white min-h-100vh"
             >
               <img
                 alt={product?.title}

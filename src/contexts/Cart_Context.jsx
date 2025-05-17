@@ -1,21 +1,20 @@
 import { useState,useContext,createContext } from "react";
 import useProduct from "./Product_Context";
+import useLocalStoreage from "../hooks/useLocalStorage.mjs";
 const CartContext= createContext();
 
 
 export function CartProvider({children}){
 
-const [cart,setCart]= useState([]);
+const [cart,setCart]= useLocalStoreage('cart',[]);
+
 const [totalCost,setTotalCost]= useState(0);
 
 function getQuantity(){
-  let quantity =0;
-  cart?.map((item)=>{
-    quantity = item.quantity +quantity
-  })
-
-  return quantity
-
+ 
+let quantity=0;
+cart?.forEach((item)=>{quantity =item.quantity +quantity})
+return quantity
 }
 
 function getTotalPrice(){
@@ -33,7 +32,7 @@ function add(arg) {
 console.log(arg)
 
   setCart(cart=>{
-    const existingProduct = cart.find(item=>item.id===arg.id);
+    const existingProduct = cart?.find(item=>item.id===arg.id);
   
     if(!existingProduct){
       return [...cart,{id:arg.id,title:arg.title,description:arg.description,category:arg.category,thumbnail:arg.thumbnail,quantity:1,price:arg.price}]
@@ -76,7 +75,7 @@ setCart(cart=>{
     return cart.filter((item)=>item.id !==arg.id)
   }
 })
-
+localStorage.setItem(cart)
 }
 
 let values={add,minus,remove,cart,getTotalPrice,getQuantity,setQuantity};

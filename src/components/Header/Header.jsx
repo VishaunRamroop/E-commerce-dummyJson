@@ -22,7 +22,7 @@ const navigation = [
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white fixed top-0 left-0 w-full z-50 bg-white shadow-md">
+    <header className="bg-gray-300 z-50 top-0 left-0 w-full mt-0 pt-0 shadow-md">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 min-h-20 m-5">
         <div className="flex items-center gap-x-12">
           <a href="#" className="-m-1.5 p-1.5">

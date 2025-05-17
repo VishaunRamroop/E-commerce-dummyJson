@@ -17,7 +17,7 @@ if(maxPages <= maxShow){
 }else{
   numbers.push(0)
 
-  for(let i = Math.max(currentPage-range,1);i<=Math.min(currentPage+range,maxPages);i++){
+  for(let i = Math.max(currentPage-range,1);i<=Math.min(currentPage+range,maxPages-2);i++){
     numbers.push(i)
   }
   numbers.push(maxPages-1)

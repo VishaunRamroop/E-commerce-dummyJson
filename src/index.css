@@ -1,7 +1,4 @@
 @import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 *{
 
@@ -19,4 +16,10 @@ html{
 }
 button{
   cursor: pointer;
+}
+
+html{
+  margin: 0;
+  padding: 0;
+  height: 100vh;
 }

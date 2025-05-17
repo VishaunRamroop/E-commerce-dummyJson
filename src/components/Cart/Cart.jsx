@@ -26,7 +26,7 @@ import { CheckIcon, ClockIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroic
 
 
 
-export default function Example() {
+export default function Cart() {
    const {cart,getTotalPrice,setQuantity,remove}= useCart();
 console.log(cart)
   return (
@@ -40,7 +40,7 @@ console.log(cart)
             </h2>
 
             <ul role="list" className="divide-y divide-gray-200 border-t border-b border-gray-200">
-              {cart.length ===0? <p>No Items in Cart</p>:cart?.map((product, productIdx) => (
+              {cart?.length ===0? <p>No Items in Cart</p>:cart?.map((product, productIdx) => (
                 <li key={product.id} className="flex py-6 sm:py-10">
                   <div className="shrink-0">
                     <img
@@ -74,9 +74,11 @@ console.log(cart)
                           <select
                             name={`quantity-${productIdx}`}
                             aria-label={`Quantity, ${product.title}`}
+                            value={product.quantity}
                             className="col-start-1 row-start-1 appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                             onChange={(e)=>setQuantity(product,e.target.value)}
                           >
+                     
                             <option value={1}>1</option>
                             <option value={2}>2</option>
                             <option value={3}>3</option>
@@ -93,9 +95,9 @@ console.log(cart)
                         </div>
 
                         <div className="absolute top-0 right-0">
-                          <button type="button" className="m-2  p-2 text-gray-400 ">
+                          <button type="button" className="m-2   ">
                             <span className="sr-only">Remove</span>
-                            <XMarkIcon aria-hidden="true"className="p-2 m-2 rounded-lg text-xxl font-bold text-blue-900 transition duration-150 hover:text-red-700  hover:bg-red-200" onClick={()=>{remove(product)}} />
+                            <span className="p-2 m-2 rounded-xl text-xxl text-black font-bold transition duration-150 hover:text-red-700  hover:bg-red-200" onClick={()=>{remove(product)}} >X</span>
                           </button>
                         </div>
                       </div>

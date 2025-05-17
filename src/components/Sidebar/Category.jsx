@@ -124,7 +124,7 @@ getProducts(currentPage,'price',category,minPrice,maxPrice)
 
 },[currentPage,category,minPrice,maxPrice])
   return (
-    <div className="bg-white">
+    <div className="bg-white min-h-100vh">
      {<div>
         {/* Mobile filter dialog */}
         <Dialog open={mobileFiltersOpen} onClose={setMobileFiltersOpen} className="relative z-40 lg:hidden">

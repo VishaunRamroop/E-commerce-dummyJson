@@ -5,11 +5,13 @@ import Header from './components/Header/Header';
 import Home from './pages/Home'
 import ProductPage from './components/Products/ProductPage';
 import Cart from './components/Cart/Cart';
+
 function App() {
  
 
   return (
    <div className="app">
+ 
     <Header/>
     <Routes>
       <Route path='/' element={<Home/>}/>

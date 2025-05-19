@@ -17,15 +17,18 @@ cart?.forEach((item)=>{quantity =item.quantity +quantity})
 return quantity
 }
 
-function getTotalPrice(){
+function getSubTotalPrice(){
 let price=0;
 cart?.forEach((item)=>{
   price = item.quantity* item.price +price;
 });
-return price
+return Number(price.toFixed(2))
 }
 
-
+function calculateTax(subTotal){
+  const taxRate= 0.08;
+  return Number((taxRate*subTotal).toFixed(2))
+}
 function add(arg) {
 
 
@@ -78,7 +81,7 @@ setCart(cart=>{
 localStorage.setItem(cart)
 }
 
-let values={add,minus,remove,cart,getTotalPrice,getQuantity,setQuantity};
+let values={add,minus,remove,cart,getSubTotalPrice,getQuantity,setQuantity,calculateTax};
   return <CartContext.Provider value={values}>
     {children}
   </CartContext.Provider>

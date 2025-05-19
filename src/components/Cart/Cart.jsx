@@ -27,7 +27,7 @@ import { CheckIcon, ClockIcon, QuestionMarkCircleIcon, XMarkIcon } from '@heroic
 
 
 export default function Cart() {
-   const {cart,getTotalPrice,setQuantity,remove}= useCart();
+   const {cart,getSubTotalPrice,setQuantity,remove,calculateTax}= useCart();
 console.log(cart)
   return (
     <div className="bg-white">
@@ -74,26 +74,19 @@ console.log(cart)
                           <select
                             name={`quantity-${productIdx}`}
                             aria-label={`Quantity, ${product.title}`}
-                            value={product.quantity}
-                            className="col-start-1 row-start-1 appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            defaultValue={product?.quantity}
+                            className="cursor-pointer appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
                             onChange={(e)=>setQuantity(product,e.target.value)}
                           >
-                     
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                            <option value={5}>5</option>
-                            <option value={6}>6</option>
-                            <option value={7}>7</option>
-                            <option value={8}>8</option>
+                        
+                            {[...Array(15)].map((ipt,index)=>{
+                              return <option className='flex flex-row justify-center items-center'>{index+1}</option>
+                            })}
+                        
                           </select>
-                          <ChevronDownIcon
-                            aria-hidden="true"
-                            className="col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
-                          />
+                         
                         </div>
-
+                            
                         <div className="absolute top-0 right-0">
                           <button type="button" className="m-2   ">
                             <span className="sr-only">Remove</span>
@@ -104,13 +97,8 @@ console.log(cart)
                     </div>
 
                     <p className="mt-4 flex space-x-2 text-sm text-gray-700">
-                      {product.inStock ? (
-                        <CheckIcon aria-hidden="true" className="size-5 shrink-0 text-green-500" />
-                      ) : (
-                        <ClockIcon aria-hidden="true" className="size-5 shrink-0 text-gray-300" />
-                      )}
-
-                      {/* <span>{product.inStock ? 'In stock' : `Ships in ${product.leadTime}`}</span> */}
+                     
+                    
                     </p>
                   </div>
                 </li>
@@ -118,7 +106,7 @@ console.log(cart)
             </ul>
           </section>
 
-          {/* Order summary */}
+     
           <section
             aria-labelledby="summary-heading"
             className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8"
@@ -130,7 +118,7 @@ console.log(cart)
             <dl className="mt-6 space-y-4">
               <div className="flex items-center justify-between">
                 <dt className="text-sm text-gray-600">Subtotal</dt>
-                <dd className="text-sm font-medium text-gray-900">${getTotalPrice()}</dd>
+                <dd className="text-sm font-medium text-gray-900">${getSubTotalPrice()}</dd>
               </div>
               {/* <div className="flex items-center justify-between border-t border-gray-200 pt-4">
                 <dt className="flex items-center text-sm text-gray-600">
@@ -144,17 +132,14 @@ console.log(cart)
               </div> */}
               <div className="flex items-center justify-between border-t border-gray-200 pt-4">
                 <dt className="flex text-sm text-gray-600">
-                  <span>Tax estimate</span>
-                  <a href="#" className="ml-2 shrink-0 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Learn more about how tax is calculated</span>
-                    <QuestionMarkCircleIcon aria-hidden="true" className="size-5" />
-                  </a>
+                  <span>Estimated Tax</span>
+             
                 </dt>
-                <dd className="text-sm font-medium text-gray-900">$8.32</dd>
+                <dd className="text-sm font-medium text-gray-900">${calculateTax(getSubTotalPrice())}</dd>
               </div>
               <div className="flex items-center justify-between border-t border-gray-200 pt-4">
                 <dt className="text-base font-medium text-gray-900">Order total</dt>
-                <dd className="text-base font-medium text-gray-900">${getTotalPrice()}</dd>
+                <dd className="text-base font-medium text-gray-900">${(getSubTotalPrice()+ calculateTax(getSubTotalPrice())).toFixed(2)}</dd>
               </div>
             </dl>
 

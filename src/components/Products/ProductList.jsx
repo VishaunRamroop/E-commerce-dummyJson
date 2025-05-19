@@ -3,10 +3,26 @@ import {Link} from 'react-router-dom'
 import useProduct from '../../contexts/Product_Context';
 import useCart from '../../contexts/Cart_Context';
 import Pagination from '../Pagination/Pagination';
+
+import toast,{ useToaster } from 'react-hot-toast';
 import '../../index.css'
 export default function ProductList() {
   const {loading,setLoading,error,setError,products,getProducts,currentPage,setCurrentPage,operation,setOperation,open,setOpen,minPrice,maxPrice,total,product,category,setCategory}= useProduct();
 const{add,cart}= useCart();
+
+
+async function handleAdd(product){
+  try {
+   const addItem= await add(product);
+
+  toast.success(`Successfully added ${product.title} Item`)
+
+  } catch (error) {
+    console.error(error)
+    toast.error('Item Not added')
+  }
+}
+
   useEffect(()=>{
     getProducts(currentPage,operation,category,minPrice,maxPrice)
    
@@ -44,7 +60,7 @@ return <>
                   <p className="text-sm text-gray-500 italic">{product?.category}</p>
                   <p className="text-base font-medium text-gray-900">${product?.price}</p>
                 </div>
-                <button className='font-bold text-lg bg-red-500 text-white p-3 rounded-md cursor-pointer transition duration-300 hover:bg-red-600 active:bg-red-400 active:text-black' onClick={()=>add(product)}>Add</button>
+                <button className='font-bold text-lg bg-red-500 text-white p-3 rounded-md cursor-pointer transition duration-300 hover:bg-red-600 active:bg-red-400 active:text-black' onClick={()=>handleAdd(product)}>Add</button>
               </div>
                
             </div>

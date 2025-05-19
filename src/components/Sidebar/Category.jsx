@@ -62,18 +62,7 @@ export default function Category() {
   const {category,setCategory,minPrice,setMinPrice,maxPrice,setMaxPrice,getProducts,currentPage,setCurrentPage,operation,setOperation,product,total,loading,noProducts}= useProduct();
    const categoryOptions=['Beauty','Fragrances','Furniture','Smartphones','Groceries','Sunglasses']
   const filters = [
-  {
-    id: 'color',
-    name: 'Color',
-    options: [
-      { value: 'white', label: 'White' ,type:'radio',name:'category'},
-      { value: 'beige', label: 'Beige' ,type:'radio',name:'category'},
-      { value: 'blue', label: 'Blue',type:'radio' ,name:'category'},
-      { value: 'brown', label: 'Brown' ,type:'radio',name:'category'},
-      { value: 'green', label: 'Green',type:'radio' ,name:'category'},
-      { value: 'purple', label: 'Purple' ,type:'radio',name:'category'},
-    ],
-  },
+  
   {
     id: 'category',
     name: 'Category',
@@ -124,7 +113,7 @@ getProducts(currentPage,'price',category,minPrice,maxPrice)
 
 },[currentPage,category,minPrice,maxPrice])
   return (
-    <div className="bg-white min-h-100vh">
+    <div className="bg-white min-h-[100vh]">
      {<div>
         {/* Mobile filter dialog */}
         <Dialog open={mobileFiltersOpen} onClose={setMobileFiltersOpen} className="relative z-40 lg:hidden">
@@ -195,7 +184,7 @@ getProducts(currentPage,'price',category,minPrice,maxPrice)
           </div>
         </Dialog>
 
-        <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 h-100vh justify-center items-center">
+        <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 h-[100vh] justify-center items-center">
           
           <div className="border-b border-gray-200 pb-10">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">Categories</h1>
